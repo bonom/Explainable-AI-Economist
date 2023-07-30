@@ -120,12 +120,6 @@ class PPODtTrainConfig:
         },
     ):
         if env is not None:
-            # Ordinare questo file:
-            # TODO: salvare TUTTI i parametri nel file toml, non solo alcuni
-
-            # Logica:
-            # per esempio vogliamo che ogni DT si alleni per 6000 passi, che ci siano 30 DT e che questi
-
             self.env = env
             self.set_seed(seed)
             obs = env.reset()
@@ -175,8 +169,6 @@ class PPODtTrainConfig:
             self.validate_config_dt()
             self.validate_config_ppo()
 
-            # logging.info("Setup complete!")
-
     def log_config(self, planner, mapped_agents, input_space):
         """
         Put experiment's config in a TOML file.
@@ -210,7 +202,6 @@ class PPODtTrainConfig:
                         "up": self.up,
                         "lambda_": self.lambda_,
                         "input_space": input_space,
-                        # "grammar_agent": self.grammar_agent,
                         "grammar_planner": {
                             str(key) : value for key, value in self.grammar_planner.items()
                         }
@@ -666,20 +657,11 @@ class PPODtTrainConfig:
             planner.set_reward(rew.get("p", 0))
 
             if done["__all__"] is True:
+                logging.warning("Episode finished early!")
                 break
 
         if done["__all__"].item() is True:
-            print("Episode finished")
             return planner.rewards, env.env.previous_episode_dense_log
-            # Start the episode
-            # planner.new_episode()
-
-            # planner_action = planner(obs.get("p").get("flat"))
-            # actions = {key: [0] for key in obs.keys()}
-            # actions["p"] = planner_action
-            # obs, rew, done, _ = env.step(actions)
-
-            # planner.set_reward(rew.get("p", 0))
 
         return planner.rewards, env.env.previous_episode_dense_log
 
@@ -790,46 +772,6 @@ class PPODtTrainConfig:
             
         return
 
-    # def train(
-    #     self,
-    # ) -> None:
-    #     with parallel_backend("multiprocessing"):
-    #         pop, log, hof, best_leaves = self.grammatical_evolution(
-    #             self.evaluate_fitness,
-    #             individuals=self.lambda_,
-    #             generations=self.generations,
-    #             cx_prob=self.cxp,
-    #             m_prob=self.mp,
-    #             logfile=self.logfile,
-    #             mutation=self.mutation,
-    #             crossover=self.crossover,
-    #             initial_len=self.genotype_len,
-    #             selection=self.selection,
-    #             planner_only=True,
-    #         )
-
-    #     with open(self.logfile, "a") as log_:
-    #         phenotype, _ = GrammaticalEvolutionTranslator(self.grammar_planner).genotype_to_str(hof[0])
-    #         phenotype = phenotype.replace('leaf="_leaf"', '')
-
-    #         for k in range(50000):  # Iterate over all possible leaves
-    #             key = "leaf_{}".format(k)
-    #             if key in best_leaves:
-    #                 v = best_leaves[key].q
-    #                 phenotype = phenotype.replace("out=_leaf", "out={}".format(np.argmax(v)), 1)
-    #             else:
-    #                 break
-
-    #         log_.write(str(log) + "\n")
-    #         log_.write(str(hof[0]) + "\n")
-    #         log_.write(phenotype + "\n")
-    #         log_.write("best_fitness: {}".format(hof[0].fitness.values[0]))
-
-
-    #     with open(os.path.join(self.logdir, "fitness.tsv"), "+w") as f:
-    #         f.write(str(log))
-
-
     def grammatical_evolution(
         self,
         fitness_function,
@@ -844,8 +786,6 @@ class PPODtTrainConfig:
         logfile=None,
         planner_only:bool = False,
     ):
-        # random.seed(seed)
-        # np.random.seed(seed)
 
         _max_value = 40000
 
@@ -866,10 +806,6 @@ class PPODtTrainConfig:
             initial_len
         )
 
-        # Structure initializers
-        # if jobs > 1:
-        #     toolbox.register("map", get_map(jobs, timeout))
-            # toolbox.register("map", multiprocess.Pool(jobs).map)
         toolbox.register(
             "individual",
             tools.initRepeat,

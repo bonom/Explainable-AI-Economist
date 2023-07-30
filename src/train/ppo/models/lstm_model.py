@@ -171,18 +171,12 @@ class LSTMModel(nn.Module):
         self.relu = nn.ReLU()
         self.softmax = nn.Softmax()
 
-        # self.hidden_state_h_p = torch.ones(1, self.cell_size, device=self.device)
-        # self.hidden_state_c_p = torch.ones(1, self.cell_size, device=self.device)
-        # self.hidden_state_h_v = torch.ones(1, self.cell_size, device=self.device)
-        # self.hidden_state_c_v = torch.ones(1, self.cell_size, device=self.device)
-
         self.optimizer = torch.optim.AdamW(self.parameters(), lr=self.lr)
         self.scheduler = torch.optim.lr_scheduler.StepLR(
             self.optimizer, step_size=1, gamma=0.99
         )
         self.mse_loss = nn.MSELoss()
 
-        # TODO: spostare in alto
         self.logit_mask = torch.ones(self.action_space).to(self.device) * -10000000
         self.one_mask = torch.ones(self.action_space).to(self.device)
 
@@ -293,9 +287,6 @@ class LSTMModel(nn.Module):
         # LSTM
 
         # Project LSTM output to logits
-        # TODO:
-        # lstm_out, hidden = self.lstm_policy(layer_norm_out, (self.hidden_state_h_p, self.hidden_state_c_p))
-        # self.hidden_state_h_p, self.hidden_state_c_p = hidden[0].detach(), hidden[1].detach()
         lstm_out, _ = self.lstm_policy(layer_norm_out)
         logits = self.output_policy(lstm_out)
 
@@ -450,9 +441,6 @@ class LSTMModel(nn.Module):
         layer_norm_out = self.layer_norm_value(fc_in)
 
         # Project LSTM output to logits
-        # lstm_out, hidden = self.lstm_value(layer_norm_out, (self.hidden_state_h_p, self.hidden_state_c_p))
-        # self.hidden_state_h_p, self.hidden_state_c_p = hidden[0].detach(), hidden[1].detach()
-
         lstm_out, _ = self.lstm_value(layer_norm_out)
         state_values = self.output_value(lstm_out)
 

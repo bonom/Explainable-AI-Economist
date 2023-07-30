@@ -89,10 +89,6 @@ class PytorchLinearA(nn.Module):
                 {"params": self.critic.parameters(), "lr": lr_critic},
             ]
         )
-        
-        # self.scheduler = torch.optim.lr_scheduler.StepLR(
-        #     self.optimizer, step_size=1, gamma=0.99
-        # )
 
     def act(self, obs):
         """
@@ -280,8 +276,8 @@ class PytorchLinearP(nn.Module):
             state_values: value function reward prediction
             dist_entropy: entropy of actions distribution
         """
-        # TODO optimize memory so data doesn't need to be squeezed
-        action_probs = self.actor(obs["flat"])  # .squeeze())
+        
+        action_probs = self.actor(obs["flat"]) 
         action_probs = torch.split(action_probs, 22, dim=-1)
 
         dist_entropy = torch.zeros((7, len(act)))
@@ -293,12 +289,11 @@ class PytorchLinearP(nn.Module):
             action_logprobs[i] = dist.log_prob(act[:, i])
             dist_entropy[i] = dist.entropy()
 
-        state_values = self.critic(obs["flat"])  # .squeeze())
+        state_values = self.critic(obs["flat"]) 
 
         action_logprobs = action_logprobs.transpose(0, 1)
         dist_entropy = dist_entropy.transpose(0, 1)
-        # state_values = state_values.transpose(0, 1)
-
+        
         return action_logprobs.detach(), state_values.detach(), dist_entropy
 
     def forward(

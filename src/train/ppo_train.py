@@ -350,13 +350,6 @@ class PpoTrainConfig:
         if self.gamma < 0 or self.gamma > 1:
             raise ValueError("'gamma' must be between (0,1).")
 
-        # if self.device != "cpu":
-        #     # raise ValueError()
-        #     logging.warning(
-        #         "The only available 'device' at the moment is 'cpu'. Redirecting everything to 'cpu'!"
-        #     )
-        #     self.device = "cpu"
-
         if self.learning_rate < 0 and self.learning_rate > 1:
             raise ValueError("'learning_rate' must be between (0,1).")
 
@@ -378,7 +371,7 @@ class PpoTrainConfig:
         Creates this experiment directory and a log file.
         """
         date = datetime.today().strftime("%d-%m-%Y")
-        experiment_name = f"PPO_{self.phase}"#_{date}_{int(time.time())}_{self.step}"
+        experiment_name = f"PPO_{self.phase}"
         path = f"experiments/{experiment_name}"
 
         if not os.path.exists(path):

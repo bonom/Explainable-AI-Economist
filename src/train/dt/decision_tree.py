@@ -159,27 +159,10 @@ class PythonDT(DecisionTree):
         self.rewards = []
 
         if load_path is not None:
-            self.load(load_path)#, planner)
+            self.load(load_path)
 
         else:
-            # if phenotype is None:
-            #     raise ValueError("Phenotype is None and load_path is None")
-            # assert n_actions > 0, "n_actions must be greater than 0"
-
             while "_leaf" in self.program:
-                # if planner:
-                #     for i in range(7):
-                #         new_leaf = CLeaf(n_actions, lr, df, eps, low=low, up=up)
-                #         leaf_name = "leaf_{}_{}".format(n_leaves, i)
-                #         self.leaves[leaf_name] = new_leaf
-
-                #         self.program = self.program.replace(
-                #             "_leaf", "'{}.get_action()'".format(leaf_name), 1
-                #         )
-                #         self.program = self.program.replace(
-                #             "_leaf", "{}".format(leaf_name), 1
-                #         )
-                # else:
                 new_leaf = CLeaf(n_actions, lr, df, eps, low=low, up=up)
                 leaf_name = "leaf_{}".format(n_leaves)
                 self.leaves[leaf_name] = new_leaf
@@ -198,7 +181,7 @@ class PythonDT(DecisionTree):
     def get_action(self, input):
         if len(self.program) == 0:
             return None
-        variables = {}  # {"out": None, "leaf": None}
+        variables = {} 
         for idx, i in enumerate(input):
             variables["_in_{}".format(idx)] = i
         variables.update(self.leaves)
@@ -212,41 +195,6 @@ class PythonDT(DecisionTree):
         self.last_leaf = current_leaf 
         
         return current_leaf.get_action()
-
-    # def get_action(self, input):
-    #     if len(self.program) == 0:
-    #         return None
-    #     variables = {}  # {"out": None, "leaf": None}
-    #     for idx, i in enumerate(input):
-    #         variables["_in_{}".format(idx)] = i
-    #     variables.update(self.leaves)
-
-    #     if self.planner:
-    #         actions = []
-    #         # Subdivide the space in 7 parts and get the action for each one
-    #         for i in range(7):
-    #             variables["_in_0"] = i
-    #             exec(self.exec_, variables)
-    #             current_leaf = self.leaves[variables["leaf"]]
-
-    #             current_q_value = max(current_leaf.q)
-    #             if self.last_leaf is not None:
-    #                 self.last_leaf.update(self.current_reward, current_q_value)
-    #             self.last_leaf = current_leaf
-
-    #             actions.append(current_leaf.get_action())
-
-    #         return actions
-
-    #     exec(self.exec_, variables)
-
-    #     current_leaf: CLeaf = self.leaves[variables["leaf"]]
-    #     current_q_value = max(current_leaf.q)
-    #     if self.last_leaf is not None:
-    #         self.last_leaf.update(self.current_reward, current_q_value)
-    #     self.last_leaf = current_leaf
-
-    #     return current_leaf.get_action()
 
     def __call__(self, x):
         return self.get_action(x)

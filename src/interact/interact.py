@@ -227,9 +227,6 @@ class InteractConfig:
         Creates this experiment directory and a log file.
         """
 
-        # folder_dir = self.mapped_agents.get("p").split("_")
-        # date = folder_dir[-3] #+ "_" + folder_dir[-2]
-        # id = folder_dir[-2]
         algorithm_name = "PPO" 
         if self.trainer ==  DtTrainConfig:
             algorithm_name = "DT"
@@ -276,34 +273,13 @@ class InteractConfig:
         if not isinstance(self.seed, int):
             raise ValueError("'seed' muse be integer!")
 
-        # if self.device != "cpu":
-        #     # raise ValueError()
-        #     logging.warning(
-        #         "The only available 'device' at the moment is 'cpu'. Redirecting everything to 'cpu'!"
-        #     )
-        #     self.device = "cpu"
-
         if not self.trainer in [PpoTrainConfig, DtTrainConfig, PPODtTrainConfig]:
             raise ValueError(
                 "`self.trainer` must be `PpoTrainConfig` or `DtTrainConfig`!"
             )
 
-        # Check PPO's config
-        if self.trainer == PpoTrainConfig:
-            # TODO config validation
-            pass
-        else:
-            # Check DT's config
-            # TODO: controllo da fare con Andrea.
-            pass
-
         if isinstance(self.mapped_agents["p"], str) or self.mapped_agents.get('p', False):
             self.phase = "P2"
-            # if (
-            #     not isinstance(self.mapped_agents["a"], bool)
-            #     and self.mapped_agents["p"] != self.mapped_agents["a"]
-            # ):
-            #     raise ValueError("The path for pretrained models must be the same!")
         else:
             self.phase = "P1"
 
@@ -400,7 +376,6 @@ class InteractConfig:
                 f.write(f"# Periodic Tax\n\n| Step | Agent | Income | Tax | Percentage (Income/Tax * 100) |\n| --- | --- | --- | --- | --- |\n")
             for idx, tax in enumerate(dense_logs.get('PeriodicTax')):
                 if len(tax) > 0:
-                    # f.write(f"## Step {idx+1}\n\nEach agent earned and paid:\n")
                     for key, values in tax.items():
                         if key in ['0', '1', '2', '3']:
                             _income = values.get('income')
@@ -410,10 +385,8 @@ class InteractConfig:
                             elif self.phase == 'P2':
                                 if _income <= 0:
                                     f.write(f"| {idx+1} | {key} | {_income:.2f} | {_tax_paid:.2f} | 0.0 % |\n")
-                                    # f.write(f"- Agent {key} has income {_income:.2f} and paid in taxes {_tax_paid:.2f} (0.0 %)\n")
                                 else:
                                     f.write(f"| {idx+1} | {key} | {_income:.2f} | {_tax_paid:.2f} | {round((_tax_paid/_income)*100, 1)} % |\n")
-                                    # f.write(f" - Agent {key} has income {_income:.2f} and paid in taxes {_tax_paid:.2f} ({round((_tax_paid/_income)*100, 1)} %)\n")
                             total_per_agent['income'][key] += _income
                             total_per_agent['tax'][key] += _tax_paid
                            
@@ -443,7 +416,6 @@ class InteractConfig:
                 f.write(f"# Periodic Tax LaTeX ready\n\n Step & Agent & Income & Tax & $\%$ \n")
             for idx, tax in enumerate(dense_logs.get('PeriodicTax')):
                 if len(tax) > 0:
-                    # f.write(f"## Step {idx+1}\n\nEach agent earned and paid:\n")
                     f.write(f"{idx+1}")
                     for key, values in tax.items():
                         if key in ['0', '1', '2', '3']:
@@ -454,10 +426,8 @@ class InteractConfig:
                             elif self.phase == 'P2':
                                 if _income <= 0:
                                     f.write(f" & {key} & {_income:.2f} & {_tax_paid:.2f} & 0.0 \n")
-                                    # f.write(f"- Agent {key} has income {_income:.2f} and paid in taxes {_tax_paid:.2f} (0.0 %)\n")
                                 else:
                                     f.write(f" & {key} & {_income:.2f} & {_tax_paid:.2f} & {round((_tax_paid/_income)*100, 1)} \n")
-                                    # f.write(f" - Agent {key} has income {_income:.2f} and paid in taxes {_tax_paid:.2f} ({round((_tax_paid/_income)*100, 1)} %)\n")
                             total_per_agent['income'][key] += _income
                             total_per_agent['tax'][key] += _tax_paid
                            

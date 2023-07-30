@@ -27,8 +27,8 @@ def get_mapping_function():
     """
     def mapping_function(key: str) -> str:
         """
-        `a` -> economic player\\
-        `p` -> social planner
+        - `a` -> economic player
+        - `p` -> social planner
         """
         if str(key).isdigit() or key == "a":
             return "a"
@@ -124,7 +124,7 @@ if __name__ == "__main__":
                 generations=2000,
                 seed=1,
                 mapped_agents={
-                    "a": args.path_ppo,  # This must be the folder name to load the agent pre-trained in pytorch
+                    "a": args.path_ppo,  # This MUST be the folder name to load the agent pre-trained in pytorch
                     "p": args.path_dt
                 }
             )

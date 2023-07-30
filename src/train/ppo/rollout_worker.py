@@ -21,8 +21,6 @@ from src.train.ppo import PpoPolicy, data_logging, save_batch
 
 class RolloutWorker:
     """
-    A lui arriva il solito policies_config che gia' contiene come sono
-    impostate le policy e la loro configurazione.
     """
 
     def __init__(
