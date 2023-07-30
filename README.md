@@ -57,3 +57,7 @@ The script will save the results and the plots in the `experiments` folder with 
 ## Contributions
 
 Thanks to [Sa1g](https://github.com/sa1g) for writing the the code for an efficient training of the PPO agents.
+
+## License
+
+Foundation, the AI Economist and all the code available in the repository are released under the [BSD-3 License](LICENSE.txt).
