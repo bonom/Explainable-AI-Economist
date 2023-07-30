@@ -14,8 +14,6 @@ import torch
 import numpy as np
 import torch.nn as nn
 
-# from torch.autograd import Variable
-
 WORLD_MAP = "world-map"
 WORLD_IDX_MAP = "world-idx_map"
 ACTION_MASK = "action_mask"

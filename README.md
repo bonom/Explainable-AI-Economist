@@ -6,7 +6,7 @@ Taxation is always a topic of discussion and debate. When considering tax polici
 
 ### Prerequisites
 
-The project is developed in Python 3.10 (Version must be `3.7 <= __version__ < 3.11`). I strongly recommend to use a virtual environment and install the dependencies with the following command:
+The project is developed in Python 3.7. I strongly recommend to use a virtual environment and install the dependencies with the following command:
 
 ```
 pip install -r requirements.txt
@@ -18,15 +18,15 @@ In order to train the models you can either:
 
 - Train the PPO agents only: 
 ```bash
-python main.py --mode train --type ppo --path-ppo True
+python main.py --mode train --type PPO --path-ppo True
 ```
 - Train the Decision Tree with pre-trained PPO agents: 
 ```bash
-python main.py --mode train --type ppo_dt --path-ppo <path name in 'experiments' to the PPO agents> --path-dt True
+python main.py --mode train --type PPO_DT --path-ppo <path name in 'experiments' to the PPO agents> --path-dt True
 ```
 - Train the Decision Tree only for both agents and planner: 
 ```bash
-python main.py --mode train --type dt --path-dt True
+python main.py --mode train --type DT --path-dt True
 ```
   
 There are other possibilities but they are not recommended. 
@@ -39,17 +39,17 @@ In order to evaluate the models you can either:
 
 - Evaluate the PPO agents only: 
 ```bash
-python main.py --mode eval --type ppo --path-ppo <path name in 'experiments' to the PPO agents>
+python main.py --mode eval --type PPO --path-ppo <path name in 'experiments' to the PPO agents>
 ```
 
 - Evaluate the Decision Tree with pre-trained PPO agents: 
 ```bash
-python main.py --mode eval --type ppo_dt --path-ppo <path name in 'experiments' to the PPO agents> --path-dt <path name in 'experiments' to the Decision Tree>
+python main.py --mode eval --type PPO_DT --path-ppo <path name in 'experiments' to the PPO agents> --path-dt <path name in 'experiments' to the Decision Tree>
 ```
 
 - Evaluate the Decision Tree only for both agents and planner: 
 ```bash
-python main.py --mode eval --type dt --path-dt <path name in 'experiments' to the Decision Tree>
+python main.py --mode eval --type DT --path-dt <path name in 'experiments' to the Decision Tree>
 ```
 
 The script will save the results and the plots in the `experiments` folder with the string `EVAL_` before the folder path.

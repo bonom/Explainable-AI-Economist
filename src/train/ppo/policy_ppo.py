@@ -11,10 +11,9 @@ from typing import List, Tuple
 import torch
 
 from src.common import Model
-from src.train.ppo import LSTMModel
 from src.common.rollout_buffer import SingleBuffer
 from src.train.ppo.utils.execution_time import exec_time
-from src.train.ppo import PytorchLinearA, PytorchLinearP
+from src.train.ppo.models import PytorchLinearA, PytorchLinearP, LSTMModel
 
 
 class PpoPolicy(Model):

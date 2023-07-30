@@ -14,7 +14,8 @@ from typing import Tuple
 from src.common import EmptyModel
 from src.common.rollout_buffer import RolloutBuffer
 from src.train.ppo.utils.execution_time import exec_time
-from src.train.ppo import PpoPolicy, data_logging, save_batch
+from src.train.ppo import PpoPolicy
+from src.train.ppo.utils import data_logging, save_batch
 
 # pylint: disable=consider-using-dict-items,consider-iterating-dictionary
 

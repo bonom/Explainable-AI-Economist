@@ -1,6 +1,6 @@
 lz4==4.3.2
-numpy
-scipy #==1.7.3
+numpy==1.21.6
+scipy==1.7.3
 torch
 matplotlib
 tqdm
@@ -9,3 +9,4 @@ joblib
 deap
 gym==0.21.0
 tensordict
+importlib-metadata<=4.13.0
