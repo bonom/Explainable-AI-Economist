@@ -1,0 +1,11 @@
+lz4==4.3.2
+numpy
+scipy #==1.7.3
+torch
+matplotlib
+tqdm
+toml
+joblib
+deap
+gym==0.21.0
+tensordict
